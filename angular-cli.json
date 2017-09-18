@@ -5,7 +5,7 @@
   },
   "apps": [
     {
-      "root": "src/b2c/",
+      "root": "src/b2c",
       "outDir": "dist/b2c/client",
       "assets": [
         "assets",
@@ -31,7 +31,7 @@
     },
     {
       "name": "server",
-      "root": "src/b2c/",
+      "root": "src/b2c",
       "outDir": "dist/b2c/server",
       "assets": [
         "assets",
