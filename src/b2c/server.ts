@@ -2,13 +2,14 @@
  * the polyfills must be the first thing imported
  */
 import './polyfills.ts';
+import 'reflect-metadata';
 import * as path from 'path';
 import * as express from 'express';
 import * as compression from 'compression';
 import * as morgan from 'morgan';
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import { enableProdMode } from '@angular/core';
-import { AppModule } from './app/app.node.module';
+import { AppModuleServer } from './app/app.node.module';
 import { environment } from './environments/environment';
 import { routes } from './server.routes';
 
@@ -46,7 +47,7 @@ app.use(compression());
  * Express View
  */
 app.engine('html', ngExpressEngine({
-  bootstrap: AppModule
+  bootstrap: AppModuleServer
 }));
 
 /**
@@ -92,6 +93,6 @@ app.get('*', function (req: any, res: any) {
 });
 
 app.listen(port, () => {
-  console.log(ROOT);
+  console.log(__dirname);
   console.log(`Listening on port ${port}`);
 });

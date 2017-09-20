@@ -1,42 +1,62 @@
 /**
- * This file and `main.browser.ts` are identical, at the moment(!)
- * By splitting these, you're able to create logic, imports, etc that are "Platform" specific.
- * If you want your code to be completely Universal and don't need that
- * You can also just have 1 file, that is imported into both
- * client.ts and server.ts
+ * Server index module
  */
-
-import { NgModule } from '@angular/core';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/first';
+import { APP_BOOTSTRAP_LISTENER, ApplicationRef, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ServerModule } from '@angular/platform-server';
+import { Subscription } from 'rxjs/Subscription';
+import { environment } from '../environments/environment';
 import { ServerStateTransferModule, StateTransferService } from '@ngx-universal/state-transfer';
-import { AppComponent } from './index';
-// import { RouterModule } from '@angular/router';
+/**
+ * Will be used for JWT based authentication.
+ */
+import { AuthModule } from '@ngx-auth/core';
+
+import { AppModule } from './app.module';
+import { AppComponent } from './app.component';
+
+export function bootstrapFactory(
+  appRef: ApplicationRef,
+  stateTransfer: StateTransferService
+): () => Subscription {
+    return () => appRef['isStable']
+    .filter(stable => stable)
+    .first()
+    .subscribe(() => {
+      stateTransfer.inject();
+    });
+}
 
 /**
  * Top-level NgModule "container"
  */
 @NgModule({
-  bootstrap: [ AppComponent ],
-  declarations: [ AppComponent ],
   imports: [
     /**
      * NOTE: Needs to be your first import (!)
-     * NodeModule, NodeHttpModule, NodeJsonpModule are included
      */
     BrowserModule.withServerTransition({
-      appId: 'my-app-id'
+      appId: 'MY_APP_TOKEN'
     }),
     ServerModule,
-    ServerStateTransferModule.forRoot()    
-  ]
+    ServerStateTransferModule.forRoot(),
+    AuthModule.forServer(),
+    AppModule
+  ],
+  providers: [
+    {
+      provide: APP_BOOTSTRAP_LISTENER,
+      useFactory: bootstrapFactory,
+      multi: true,
+      deps: [
+        ApplicationRef,
+        StateTransferService
+      ]
+    }
+  ],
+  bootstrap: [ AppComponent ]
 })
-export class AppModule {
-  constructor(private readonly stateTransfer: StateTransferService){
-
-  }
-
-  ngOnBootstrap = ()=>{
-    this.stateTransfer.inject();
-  }
+export class AppModuleServer {
 }

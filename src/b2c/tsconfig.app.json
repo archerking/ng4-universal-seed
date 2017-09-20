@@ -2,12 +2,15 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "",
-    "module": "es2015",
     "types": [],
     "sourceMap": true
   },
   "exclude": [
+    "app.node.module.ts",
     "test.ts",
     "**/*.spec.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "entryModule": "../../src/b2c/app/app.browser.module#AppModuleClient"
+  }
 }

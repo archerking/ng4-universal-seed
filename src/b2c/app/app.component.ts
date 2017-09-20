@@ -1,3 +1,6 @@
+/**
+ * Root component.
+ */
 import { Component } from '@angular/core';
 
 @Component({
@@ -6,5 +9,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Am rendered through Universal!';
+  title = 'Am rendered through Universal!!';
+  constructor(){}
 }

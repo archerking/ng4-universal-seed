@@ -2,16 +2,16 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "",
-    "module": "es6",
     "types": [],
     "sourceMap": true
   },
   "target":"node",
   "exclude": [
+    "app.browser.module.ts",
     "test.ts",
     "**/*.spec.ts"
   ],
   "angularCompilerOptions": {
-    "entryModule": "app/app.node.module#AppModule"
+    "entryModule": "../../src/b2c/app/app.node.module#AppModuleServer"
   }
 }
